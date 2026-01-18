@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NexTopup | Premium</title>
+    <title>TigerStore | Mobile Legends Topup</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
-        .hero { background: linear-gradient(135deg, #0f172a, #1e40af); height: 160px; border-radius: 0 0 50px 50px; }
-        .card { background: white; border-radius: 30px; border: 1px solid #f1f5f9; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        .pkg-card { transition: 0.2s; cursor: pointer; border-radius: 20px; border: 2px solid #f1f5f9; }
-        .pkg-card.active { border-color: #3b82f6; background: #eff6ff; transform: scale(0.97); }
-        .modal { display: none !important; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 1000; backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; }
+        .hero-gradient { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
+        .pkg-card { transition: 0.3s; cursor: pointer; border: 2px solid #f1f5f9; background: white; border-radius: 24px; }
+        .pkg-card.active { border-color: #3b82f6; background: #eff6ff; transform: scale(0.96); }
+        .modal { display: none !important; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 1000; backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 20px; }
         .modal.show { display: flex !important; }
     </style>
 </head>
 <body class="pb-36">
 
-    <div class="hero flex flex-col items-center justify-center text-white shadow-2xl">
-        <h1 class="text-2xl font-black italic tracking-[4px]">NEXTOPUP</h1>
-        <p class="text-[9px] font-bold opacity-60 uppercase tracking-widest mt-1">Reliable Gaming Partner</p>
+    <div class="hero-gradient p-10 text-center text-white rounded-b-[50px] shadow-2xl mb-8">
+        <h1 class="text-3xl font-black tracking-[5px] italic">TIGERSTORE</h1>
+        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mt-2">Fast & Secure Diamonds Topup</p>
     </div>
 
-    <div class="max-w-md mx-auto px-4 -mt-10 space-y-4">
-        <div class="card p-6">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
-                <h2 class="text-[11px] font-black text-slate-800 uppercase italic">1. Account ID</h2>
+    <div class="max-w-md mx-auto px-4 space-y-6">
+        
+        <div class="bg-white p-6 rounded-[35px] shadow-sm border border-slate-100">
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+                <h2 class="text-sm font-black text-slate-800 uppercase italic">1. បញ្ចូលលេខសម្គាល់</h2>
             </div>
+            
             <div class="flex gap-2 mb-4">
                 <div class="flex-[3]">
                     <input type="number" id="uid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-blue-500 transition-all" placeholder="User ID">
@@ -38,141 +39,144 @@
                     <input type="number" id="zid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-center text-sm outline-none border-2 border-transparent focus:border-blue-500 transition-all" placeholder="Zone">
                 </div>
             </div>
-            <button onclick="checkMLBB()" id="v-btn" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase italic tracking-widest shadow-lg active:scale-95 transition-all">Verify Username</button>
-            <div id="user-display" class="hidden mt-3 p-4 bg-blue-600 text-white rounded-2xl text-center font-black text-xs italic"></div>
+            
+            <button onclick="checkMLBB()" id="v-btn" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase italic tracking-widest shadow-lg active:scale-95 transition-all">
+                Verify Username
+            </button>
+            <div id="user-display" class="hidden mt-3 p-4 bg-blue-600 text-white rounded-2xl text-center font-black text-xs italic shadow-inner"></div>
         </div>
 
-        <div class="card p-6">
-            <h2 class="text-[10px] font-black text-slate-400 uppercase mb-4 italic">2. Select Diamond</h2>
-            <div id="price-grid" class="grid grid-cols-2 gap-3"></div>
+        <div class="bg-white p-6 rounded-[35px] shadow-sm border border-slate-100">
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
+                <h2 class="text-sm font-black text-slate-800 uppercase italic">2. ជ្រើសរើសចំនួនពេជ្រ</h2>
+            </div>
+            <div id="price-grid" class="grid grid-cols-2 gap-4">
+                </div>
         </div>
     </div>
 
-    <div class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t p-5 pb-9 flex items-center justify-between z-50 rounded-t-[40px] shadow-2xl">
+    <div class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t p-5 pb-10 flex items-center justify-between z-50 rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
         <div>
-            <p class="text-[9px] font-bold text-slate-400 uppercase">Subtotal</p>
-            <p id="summary-price" class="text-2xl font-black text-slate-800 leading-none">$0.00</p>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">តម្លៃសរុប</p>
+            <p id="summary-price" class="text-3xl font-black text-slate-800 leading-none">$0.00</p>
         </div>
-        <button onclick="openPayModal()" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-sm uppercase shadow-xl active:scale-95 transition-all">Buy Now</button>
+        <button onclick="openPayModal()" class="bg-blue-600 text-white px-12 py-4 rounded-2xl font-black text-sm uppercase shadow-xl shadow-blue-200 active:scale-95 transition-all">ទិញឥឡូវនេះ</button>
     </div>
 
     <div id="payModal" class="modal">
-        <div class="bg-white w-full max-w-sm rounded-[45px] p-8 text-center shadow-2xl">
-            <canvas id="qr-canvas" class="mx-auto mb-6 rounded-3xl border p-2"></canvas>
-            <label class="block w-full py-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl text-center cursor-pointer mb-4 overflow-hidden">
+        <div class="bg-white w-full max-w-sm rounded-[50px] p-8 text-center shadow-2xl relative overflow-hidden">
+            <h3 class="font-black text-slate-800 mb-6 uppercase italic">Scan to Pay (ABA)</h3>
+            <canvas id="qr-canvas" class="mx-auto mb-6 rounded-[30px] border-4 border-slate-50 p-2"></canvas>
+            
+            <label class="block w-full py-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-[30px] text-center cursor-pointer mb-6 transition-all hover:bg-slate-100">
                 <div id="up-area">
-                    <span class="text-[10px] font-black text-slate-500 uppercase italic">បាញ់លុយរួចដាក់រូបវិក្កយបត្រ</span>
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Upload Receipt (បញ្ជាក់ការបាញ់លុយ)</span>
                 </div>
                 <input type="file" id="f-receipt" class="hidden" onchange="handleFile(this)">
             </label>
-            <button onclick="confirmPurchase()" id="final-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-sm uppercase shadow-xl">Confirm Pay</button>
-            <button onclick="closeModal('payModal')" class="mt-4 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Cancel</button>
-        </div>
-    </div>
 
-    <div id="successModal" class="modal">
-        <div class="bg-white w-full max-w-sm rounded-[45px] p-10 text-center shadow-2xl">
-            <div class="w-20 h-20 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
-            </div>
-            <h2 class="text-2xl font-black text-slate-800 mb-1">ទិញជោគជ័យ!</h2>
-            <div class="bg-slate-50 rounded-[30px] p-6 text-left space-y-3 mb-6">
-                <div class="flex justify-between"><span class="text-[9px] font-bold text-slate-400">PLAYER</span><span id="s-name" class="text-xs font-black">...</span></div>
-                <div class="flex justify-between"><span class="text-[9px] font-bold text-slate-400">ID (ZONE)</span><span id="s-id" class="text-xs font-black">...</span></div>
-                <div class="flex justify-between border-t pt-3"><span class="text-[9px] font-bold text-slate-400">TOTAL</span><span id="s-price" class="text-lg font-black text-blue-600">...</span></div>
-            </div>
-            <button onclick="location.reload()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase italic">Close</button>
+            <button onclick="confirmPurchase()" id="final-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-blue-100 uppercase italic">Confirm Purchase</button>
+            <button onclick="closeModal('payModal')" class="mt-5 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Cancel / បោះបង់</button>
         </div>
     </div>
 
     <script>
-        let db = { products: [], orders: [] };
         let selectedItem = null;
         let base64Receipt = "";
         let playerName = "";
 
+        // ១. មុខងារទាញទិន្នន័យ (FIXED: Added Cache Buster)
         async function init() {
-            const res = await fetch('/api/data');
-            db = await res.json();
-            document.getElementById('price-grid').innerHTML = db.products.map(p => `
-                <div onclick="selectPkg('${p.name}', '${p.price}', this)" class="pkg-card p-5 text-center shadow-sm">
-                    <p class="text-2xl font-black text-slate-800 leading-none">${p.name}</p>
-                    <p class="text-[10px] font-bold text-blue-500 uppercase mt-1 italic">Diamonds</p>
-                    <p class="text-xs font-black text-slate-400 mt-2">$${p.price}</p>
-                </div>
-            `).join('');
+            try {
+                // បន្ថែម ?t=Timestamp ដើម្បីកុំឱ្យ Browser ចងចាំតម្លៃចាស់
+                const res = await fetch('/proxy/data?t=' + new Date().getTime());
+                const data = await res.json();
+                
+                const grid = document.getElementById('price-grid');
+                grid.innerHTML = data.products.map(p => `
+                    <div onclick="selectPkg('${p.name}', '${p.price}', this)" class="pkg-card p-6 text-center shadow-sm">
+                        <p class="text-2xl font-black text-slate-800 leading-none">${p.name}</p>
+                        <p class="text-[10px] font-bold text-blue-500 uppercase mt-1 tracking-widest italic">Diamonds</p>
+                        <div class="h-[1px] bg-slate-100 my-3"></div>
+                        <p class="text-sm font-black text-slate-400">$${p.price}</p>
+                    </div>
+                `).join('');
+            } catch (e) { console.error("Load Error:", e); }
         }
 
+        // ២. មុខងារឆែកឈ្មោះ
         async function checkMLBB() {
             const uid = document.getElementById('uid').value;
             const zid = document.getElementById('zid').value;
-            if(!uid || !zid) return alert("Please fill ID & Zone!");
+            if(!uid || !zid) return alert("សូមបំពេញ ID និង Zone!");
             const btn = document.getElementById('v-btn');
             btn.innerText = "Checking...";
-            const res = await fetch(`/api/check-id?uid=${uid}&zid=${zid}`);
+
+            const res = await fetch(`/proxy/check-id?uid=${uid}&zid=${zid}`);
             const data = await res.json();
+            
             if(data.success) {
                 playerName = data.username;
                 document.getElementById('user-display').innerText = "PLAYER: " + playerName;
                 document.getElementById('user-display').classList.remove('hidden');
-                btn.innerText = "VERIFIED ✓"; btn.classList.replace('bg-slate-900', 'bg-green-600');
-            } else { alert("ID Not Found!"); btn.innerText = "Verify Username"; }
+                btn.innerText = "VERIFIED ✓";
+                btn.classList.replace('bg-slate-900', 'bg-green-500');
+            } else {
+                alert("រកមិនឃើញ!");
+                btn.innerText = "Verify Username";
+            }
         }
 
-        function selectPkg(n, p, el) {
+        function selectPkg(name, price, el) {
             document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-            selectedItem = {n, p};
-            document.getElementById('summary-price').innerText = `$${p}`;
+            selectedItem = { name, price };
+            document.getElementById('summary-price').innerText = `$${price}`;
         }
 
         function openPayModal() {
-            if(!selectedItem || !playerName) return alert("Please Verify ID!");
+            if(!selectedItem || !playerName) return alert("សូម Verify ID និងជ្រើសរើសពេជ្រ!");
             document.getElementById('payModal').classList.add('show');
-            QRCode.toCanvas(document.getElementById('qr-canvas'), `ABA_PAY_${selectedItem.p}`, { width: 160 });
+            QRCode.toCanvas(document.getElementById('qr-canvas'), `ABA_PAY_${selectedItem.price}`, { width: 180 });
         }
 
-        function handleFile(i) {
-            const r = new FileReader();
-            r.onload = (e) => {
+        function handleFile(input) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
                 base64Receipt = e.target.result;
-                document.getElementById('up-area').innerHTML = `
-                    <div class="flex flex-col items-center">
-                        <img src="${base64Receipt}" class="h-16 w-16 object-cover rounded-lg mb-1">
-                        <span class="text-[9px] font-black text-green-600 uppercase">✅ Attached</span>
-                    </div>`;
+                document.getElementById('up-area').innerHTML = `<img src="${base64Receipt}" class="h-16 mx-auto rounded-lg mb-1"><span class="text-[9px] font-black text-green-600 uppercase">✅ Receipt Ready</span>`;
             };
-            r.readAsDataURL(i.files[0]);
+            reader.readAsDataURL(input.files[0]);
         }
 
+        // ៣. មុខងារបញ្ជូនការទិញ
         async function confirmPurchase() {
-            if(!base64Receipt) return alert("Please attach receipt!");
+            if(!base64Receipt) return alert("សូមភ្ជាប់វិក្កយបត្រ!");
             const btn = document.getElementById('final-btn');
             btn.innerText = "Processing..."; btn.disabled = true;
 
-            const res = await fetch('/api/orders', {
+            const res = await fetch('/proxy/orders', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     player: playerName,
                     id: document.getElementById('uid').value + "(" + document.getElementById('zid').value + ")",
-                    product: selectedItem.n,
-                    price: selectedItem.p,
+                    product: selectedItem.name,
+                    price: selectedItem.price,
                     receipt: base64Receipt
                 })
             });
-            const data = await res.json();
-            if(data.success) {
-                closeModal('payModal');
-                document.getElementById('s-name').innerText = data.order.player;
-                document.getElementById('s-id').innerText = data.order.id;
-                document.getElementById('s-price').innerText = "$" + data.order.price;
-                document.getElementById('successModal').classList.add('show');
+
+            const result = await res.json();
+            if(result.success) {
+                alert("ការទិញជោគជ័យ!");
+                location.reload();
             }
         }
 
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-        init();
+        window.onload = init;
     </script>
 </body>
 </html>
