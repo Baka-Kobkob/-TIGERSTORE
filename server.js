@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-
 app.use(express.json({ limit: '50mb' }));
 
 let db = { products: [{id:1, name:"86", price:"1.10"}], orders: [] };
@@ -21,5 +20,4 @@ app.post('/api/orders', (req, res) => {
     res.json({ success: true });
 });
 
-// ហាមប្រើ app.listen លើ Vercel
 module.exports = app;
