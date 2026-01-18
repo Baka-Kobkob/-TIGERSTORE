@@ -3,85 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NexTopup | Elite Store</title>
+    <title>NexTopup | Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        .hero-bg { background: linear-gradient(180deg, #1e40af 0%, #3b82f6 100%); height: 180px; }
-        .pkg-card { border: 2px solid transparent; transition: 0.2s; background: white; border-radius: 24px; cursor: pointer; }
-        .pkg-card.active { border-color: #3b82f6; background: #eff6ff; transform: scale(0.96); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .hero-bg { background: linear-gradient(180deg, #1e40af 0%, #3b82f6 100%); height: 160px; }
+        .pkg-card { border: 2px solid transparent; transition: 0.2s; background: white; border-radius: 20px; cursor: pointer; }
+        .pkg-card.active { border-color: #3b82f6; background: #eff6ff; transform: scale(0.97); }
         .modal { display: none !important; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); z-index: 1000; backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; }
         .modal.show { display: flex !important; }
-        #admin-view { display: none; }
     </style>
 </head>
 <body class="pb-32">
-
     <div id="store-view">
-        <div class="hero-bg rounded-b-[50px] flex flex-col items-center justify-center text-white shadow-xl">
-            <div class="w-14 h-14 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-2 border border-white/30">
-                <span class="text-2xl">💎</span>
-            </div>
-            <h1 class="text-xl font-black tracking-widest italic uppercase">NEXTOPUP</h1>
-            <p class="text-[9px] font-bold opacity-60 tracking-[0.2em]">FAST • SAFE • TRUSTED</p>
+        <div class="hero-bg rounded-b-[40px] flex flex-col items-center justify-center text-white shadow-lg">
+            <h1 class="text-xl font-black italic uppercase tracking-widest">NEXTOPUP</h1>
+            <p class="text-[9px] font-bold opacity-60 uppercase">Instant Diamond Delivery</p>
         </div>
 
         <div class="max-w-md mx-auto px-4 -mt-8 space-y-4">
-            <div class="bg-white p-5 rounded-[32px] shadow-sm border border-slate-100">
-                <div class="flex items-center gap-2 mb-4 ml-1">
-                    <div class="w-1.5 h-4 bg-blue-600 rounded-full"></div>
-                    <h2 class="text-[11px] font-black text-slate-800 uppercase italic">Verify Account</h2>
-                </div>
-                
+            <div class="bg-white p-5 rounded-[30px] shadow-sm border border-slate-100">
                 <div class="flex gap-2 mb-3">
-                    <div class="relative flex-[2.5]">
-                        <input type="number" id="uid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-slate-700 outline-none border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all text-sm" placeholder="User ID">
-                    </div>
-                    <div class="flex-1">
-                        <input type="number" id="zid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-slate-700 text-center outline-none border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all text-sm" placeholder="Zone">
-                    </div>
+                    <input type="number" id="uid" class="flex-[2.5] bg-slate-50 p-4 rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-blue-500" placeholder="User ID">
+                    <input type="number" id="zid" class="flex-1 bg-slate-50 p-4 rounded-2xl font-bold text-center text-sm outline-none border-2 border-transparent focus:border-blue-500" placeholder="Zone">
                 </div>
-                
-                <button onclick="checkMLBB()" id="v-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-xs shadow-lg uppercase tracking-widest italic active:scale-95 transition-all">
-                    Check Name
-                </button>
-
+                <button onclick="checkMLBB()" id="v-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase italic tracking-widest active:scale-95 transition-all">Check Name</button>
                 <div id="user-display" class="hidden mt-3 p-3 bg-blue-50 text-blue-700 rounded-xl text-center font-black text-[11px] border border-blue-100 italic"></div>
             </div>
 
-            <div class="bg-white p-5 rounded-[32px] shadow-sm border border-slate-100">
-                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic ml-1">Select Package</h2>
-                <div id="price-grid" class="grid grid-cols-2 gap-3">
-                    </div>
+            <div class="bg-white p-5 rounded-[30px] shadow-sm border border-slate-100">
+                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic">Select Diamonds</h2>
+                <div id="price-grid" class="grid grid-cols-2 gap-3"></div>
             </div>
         </div>
 
-        <div class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t border-slate-100 p-4 pb-8 flex items-center justify-between z-50">
+        <div class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t p-4 pb-8 flex items-center justify-between z-50">
             <div class="pl-2">
-                <p id="selected-label" class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Selected: None</p>
                 <p id="summary-price" class="text-2xl font-black text-slate-800">$0.00</p>
             </div>
-            <button onclick="openPayModal()" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-blue-200">Pay Now</button>
+            <button onclick="openPayModal()" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-sm uppercase shadow-xl">Pay Now</button>
         </div>
     </div>
 
-    <div id="admin-view" class="p-5 max-w-md mx-auto">
-        <h2 class="text-2xl font-black mb-5 italic">ORDERS LOG</h2>
+    <div id="admin-view" class="hidden p-5 max-w-md mx-auto">
+        <h2 class="text-xl font-black mb-5">Order Logs</h2>
         <div id="order-list" class="space-y-4"></div>
     </div>
 
     <div id="payModal" class="modal">
         <div class="bg-white w-full max-w-sm rounded-[40px] p-8 text-center shadow-2xl">
-            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">ABA QR Scan</h3>
             <canvas id="qr-canvas" class="mx-auto mb-6 rounded-2xl border p-2"></canvas>
-            <label class="block w-full py-4 bg-blue-50 border-2 border-dashed border-blue-100 rounded-2xl text-center cursor-pointer mb-3">
-                <span id="up-txt" class="text-[10px] font-black text-blue-600 uppercase">Attach Receipt</span>
-                <input type="file" id="receipt-input" class="hidden" onchange="handleFile(this)">
-            </label>
-            <button onclick="confirmPurchase()" id="final-btn" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase shadow-xl">Confirm Pay</button>
-            <button onclick="closeModal('payModal')" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-4">Cancel</button>
+            <input type="file" id="f-receipt" class="hidden" onchange="handleFile(this)">
+            <button onclick="document.getElementById('f-receipt').click()" id="up-txt" class="w-full py-4 bg-blue-50 text-blue-600 rounded-2xl font-black text-[10px] uppercase mb-3">Attach Receipt</button>
+            <button onclick="confirmPurchase()" id="final-btn" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase">Confirm Pay</button>
+            <button onclick="closeModal('payModal')" class="mt-4 text-slate-400 font-bold text-[10px] uppercase">Cancel</button>
         </div>
     </div>
 
@@ -92,75 +69,68 @@
         let playerName = "";
 
         async function init() {
-            try {
-                const res = await fetch('/api/data');
-                db = await res.json();
-                renderStore();
-                if(location.hash === '#admin') renderAdmin();
-            } catch (e) { console.error("Load Failed"); }
+            const res = await fetch('/api/data');
+            db = await res.json();
+            document.getElementById('price-grid').innerHTML = db.products.map(p => `
+                <div onclick="selectPkg('${p.name}', '${p.price}', this)" class="pkg-card p-5 text-center border border-slate-50 shadow-sm">
+                    <p class="text-xl font-black text-slate-800 leading-none">${p.name}</p>
+                    <p class="text-[10px] font-bold text-blue-500 uppercase mt-1">Diamonds</p>
+                    <p class="text-xs font-black text-slate-400 mt-2">$${p.price}</p>
+                </div>
+            `).join('');
+            if(location.hash === '#admin') renderAdmin();
         }
 
         async function checkMLBB() {
             const uid = document.getElementById('uid').value;
             const zid = document.getElementById('zid').value;
+            if(!uid || !zid) return alert("Fill ID & Zone!");
             const btn = document.getElementById('v-btn');
-            const disp = document.getElementById('user-display');
-            if(!uid || !zid) return alert("Please fill ID and Zone!");
+            btn.innerText = "Checking..."; btn.disabled = true;
 
-            btn.innerText = "VERIFYING...";
             const res = await fetch(`/api/check-id?uid=${uid}&zid=${zid}`);
             const data = await res.json();
-
             if(data.success) {
                 playerName = data.username;
+                const disp = document.getElementById('user-display');
                 disp.innerText = "PLAYER: " + playerName;
                 disp.classList.remove('hidden');
                 btn.innerText = "VERIFIED ✓";
-                btn.className = "w-full py-4 bg-green-600 text-white rounded-2xl font-black text-xs shadow-lg uppercase tracking-widest italic";
+                btn.classList.replace('bg-blue-600', 'bg-green-600');
             } else {
-                alert("ID NOT FOUND!");
-                btn.innerText = "CHECK NAME";
+                alert("ID Not Found!");
+                btn.innerText = "Check Name";
+                btn.disabled = false;
             }
-        }
-
-        function renderStore() {
-            document.getElementById('price-grid').innerHTML = db.products.map(p => `
-                <div onclick="selectPkg('${p.name}', '${p.price}', this)" class="pkg-card p-5 text-center shadow-sm border border-slate-50">
-                    <p class="text-xl font-black text-slate-800 leading-none mb-1">${p.name}</p>
-                    <p class="text-[10px] font-bold text-blue-500 uppercase tracking-tighter italic">Diamonds</p>
-                    <p class="text-xs font-black text-slate-400 mt-2">$${p.price}</p>
-                </div>
-            `).join('');
         }
 
         function selectPkg(n, p, el) {
             document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
             selectedItem = {n, p};
-            document.getElementById('selected-label').innerText = `Selected: ${n} Diamonds`;
             document.getElementById('summary-price').innerText = `$${p}`;
         }
 
         function openPayModal() {
             if(!selectedItem || !playerName) return alert("Verify ID and Select Package!");
             document.getElementById('payModal').classList.add('show');
-            QRCode.toCanvas(document.getElementById('qr-canvas'), `ABA_PAY_${selectedItem.p}`, { width: 180 });
+            QRCode.toCanvas(document.getElementById('qr-canvas'), `ABA_PAYMENT_${selectedItem.p}`, { width: 180 });
         }
 
-        function handleFile(input) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
+        function handleFile(i) {
+            const r = new FileReader();
+            r.onload = (e) => {
                 base64Receipt = e.target.result;
                 document.getElementById('up-txt').innerText = "✅ RECEIPT ATTACHED";
-                document.getElementById('up-txt').parentElement.classList.replace('bg-blue-50', 'bg-green-50');
+                document.getElementById('up-txt').classList.replace('text-blue-600', 'text-green-600');
             };
-            reader.readAsDataURL(input.files[0]);
+            r.readAsDataURL(i.files[0]);
         }
 
         async function confirmPurchase() {
-            if(!base64Receipt) return alert("Please upload receipt!");
+            if(!base64Receipt) return alert("Attach Receipt!");
             const btn = document.getElementById('final-btn');
-            btn.disabled = true; btn.innerText = "SENDING...";
+            btn.innerText = "Processing..."; btn.disabled = true;
 
             await fetch('/api/orders', {
                 method: 'POST',
@@ -179,12 +149,12 @@
 
         function renderAdmin() {
             document.getElementById('store-view').style.display = 'none';
-            document.getElementById('admin-view').style.display = 'block';
+            document.getElementById('admin-view').classList.remove('hidden');
             document.getElementById('order-list').innerHTML = db.orders.map(o => `
-                <div class="bg-white p-5 rounded-[30px] shadow-sm border-l-4 border-blue-600">
-                    <p class="font-black text-sm text-slate-800">${o.player} (${o.product}💎)</p>
-                    <p class="text-[10px] text-slate-400 uppercase font-bold">$${o.price} | ID: ${o.id}</p>
-                    <img src="${o.receipt}" class="mt-3 w-full h-48 object-cover rounded-2xl border">
+                <div class="bg-white p-5 rounded-[25px] shadow-sm border-l-4 border-blue-600">
+                    <p class="font-black text-sm">${o.player} (${o.product}💎)</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">${o.date} | ID: ${o.id}</p>
+                    <img src="${o.receipt}" class="mt-3 w-full h-48 object-cover rounded-xl border">
                 </div>
             `).join('');
         }
@@ -193,4 +163,4 @@
         init();
     </script>
 </body>
-                          </html>
+</html>
