@@ -1,182 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="km">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TigerStore | Mobile Legends Topup</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duty Manager Pro - Advanced Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@400;700&family=Moul&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
-        .hero-gradient { background: linear-gradient(135deg, #1e3a8a, #3b82f6); }
-        .pkg-card { transition: 0.3s; cursor: pointer; border: 2px solid #f1f5f9; background: white; border-radius: 24px; }
-        .pkg-card.active { border-color: #3b82f6; background: #eff6ff; transform: scale(0.96); }
-        .modal { display: none !important; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 1000; backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 20px; }
-        .modal.show { display: flex !important; }
+        :root {
+            --primary: #0062cc;
+            --success: #28a745;
+            --danger: #dc3545;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Hanuman', serif;
+            background: var(--bg);
+            margin: 0; padding: 15px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .container { width: 100%; max-width: 900px; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card {
+            background: white; border-radius: 16px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 20px;
+        }
+
+        .moul { font-family: 'Moul', cursive; color: var(--primary); text-align: center; margin: 0 0 20px 0; }
+
+        /* ផ្នែកបន្ថែមសមាជិក ឡូយៗ */
+        .member-list-container {
+            background: #fdfdfd; border: 1.5px dashed #cbd5e0;
+            padding: 15px; border-radius: 12px; margin: 15px 0;
+        }
+
+        .member-item {
+            display: flex; gap: 10px; margin-bottom: 10px;
+            align-items: center; animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        input, select {
+            padding: 10px 15px; border: 1.5px solid #e2e8f0;
+            border-radius: 10px; font-family: 'Hanuman'; outline: none; transition: 0.2s;
+        }
+
+        input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,98,204,0.1); }
+
+        .btn-add {
+            background: white; color: var(--success); border: 2px solid var(--success);
+            width: 100%; padding: 12px; border-radius: 12px; cursor: pointer;
+            font-weight: bold; font-size: 16px; transition: 0.3s; margin-bottom: 10px;
+        }
+        .btn-add:hover { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(40,167,69,0.2); }
+
+        .btn-delete {
+            background: #fff5f5; color: var(--danger); border: 1.5px solid var(--danger);
+            width: 40px; height: 40px; border-radius: 10px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-delete:hover { background: var(--danger); color: white; }
+
+        /* តារាង PDF */
+        #pdf-content {
+            background: white; width: 210mm; padding: 15mm;
+            box-sizing: border-box; display: block; border: 1px solid #ddd;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; }
+        th, td { border: 1.2px solid #333; padding: 8px 4px; text-align: center; font-size: 11pt; }
+        th { background: #eef2f7; color: #cc0000; }
+        .role-col { text-align: left !important; background: #f9f9f9; font-weight: bold; width: 110px; }
+
+        .day-tabs { display: flex; overflow-x: auto; gap: 8px; margin-bottom: 15px; padding: 5px; scrollbar-width: none; }
+        .day-btn { padding: 10px 20px; border: none; border-radius: 50px; background: #e2e8f0; cursor: pointer; font-weight: bold; white-space: nowrap; }
+        .day-btn.active { background: var(--primary); color: white; }
+
+        .sticky-footer { position: sticky; bottom: 15px; display: flex; gap: 10px; width: 100%; max-width: 900px; }
+        .btn-main { flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
-<body class="pb-36">
+<body>
 
-    <div class="hero-gradient p-10 text-center text-white rounded-b-[50px] shadow-2xl mb-8">
-        <h1 class="text-3xl font-black tracking-[5px] italic">TIGERSTORE</h1>
-        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mt-2">Fast & Secure Diamonds Topup</p>
-    </div>
-
-    <div class="max-w-md mx-auto px-4 space-y-6">
+<div class="container">
+    <div class="card">
+        <h2 class="moul" style="font-size: 20px;">រៀបចំបញ្ជីឈ្មោះវេន</h2>
         
-        <div class="bg-white p-6 rounded-[35px] shadow-sm border border-slate-100">
-            <div class="flex items-center gap-2 mb-5">
-                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
-                <h2 class="text-sm font-black text-slate-800 uppercase italic">1. បញ្ចូលលេខសម្គាល់</h2>
-            </div>
-            
-            <div class="flex gap-2 mb-4">
-                <div class="flex-[3]">
-                    <input type="number" id="uid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-blue-500 transition-all" placeholder="User ID">
-                </div>
-                <div class="flex-[1.2]">
-                    <input type="number" id="zid" class="w-full bg-slate-50 p-4 rounded-2xl font-bold text-center text-sm outline-none border-2 border-transparent focus:border-blue-500 transition-all" placeholder="Zone">
-                </div>
-            </div>
-            
-            <button onclick="checkMLBB()" id="v-btn" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase italic tracking-widest shadow-lg active:scale-95 transition-all">
-                Verify Username
-            </button>
-            <div id="user-display" class="hidden mt-3 p-4 bg-blue-600 text-white rounded-2xl text-center font-black text-xs italic shadow-inner"></div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px;">
+            <input type="text" id="mainLeader" placeholder="ឈ្មោះប្រធានកាយរិទ្ធិ">
+            <input type="text" id="weekRange" placeholder="សម្រាប់សប្តាហ៍ថ្ងៃទី...">
+            <input type="text" id="v1" placeholder="អនុប្រធានទី១">
+            <input type="text" id="v2" placeholder="អនុប្រធានទី២">
         </div>
 
-        <div class="bg-white p-6 rounded-[35px] shadow-sm border border-slate-100">
-            <div class="flex items-center gap-2 mb-5">
-                <div class="w-1.5 h-5 bg-blue-600 rounded-full"></div>
-                <h2 class="text-sm font-black text-slate-800 uppercase italic">2. ជ្រើសរើសចំនួនពេជ្រ</h2>
-            </div>
-            <div id="price-grid" class="grid grid-cols-2 gap-4">
-                </div>
+        <div class="day-tabs">
+            <button class="day-btn active" onclick="switchDay('mon', this)">ច័ន្ទ</button>
+            <button class="day-btn" onclick="switchDay('tue', this)">អង្គារ</button>
+            <button class="day-btn" onclick="switchDay('wed', this)">ពុធ</button>
+            <button class="day-btn" onclick="switchDay('thu', this)">ព្រហស្បតិ៍</button>
+            <button class="day-btn" onclick="switchDay('fri', this)">សុក្រ</button>
+            <button class="day-btn" onclick="switchDay('sat', this)">សៅរ៍</button>
         </div>
+
+        <div class="member-list-container" id="memberList">
+            </div>
+        
+        <button class="btn-add" onclick="addNewMember()">+ បន្ថែមសមាជិកថ្មី</button>
     </div>
 
-    <div class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-xl border-t p-5 pb-10 flex items-center justify-between z-50 rounded-t-[40px] shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">តម្លៃសរុប</p>
-            <p id="summary-price" class="text-3xl font-black text-slate-800 leading-none">$0.00</p>
+    <div id="pdf-content">
+        <div style="text-align: center;">
+            <div class="moul" style="font-size: 18pt;">ព្រះរាជាណាចក្រកម្ពុជា</div>
+            <div style="color: blue; font-weight: bold; font-size: 14pt;">ជាតិ សាសនា ព្រះមហាក្សត្រ</div>
+            <div style="margin-top: 15px; font-size: 11pt;">ប្រធានកាយរិទ្ធិ</div>
+            <div class="moul" id="outLeader" style="font-size: 18pt; margin-top: 5px;">..........</div>
         </div>
-        <button onclick="openPayModal()" class="bg-blue-600 text-white px-12 py-4 rounded-2xl font-black text-sm uppercase shadow-xl shadow-blue-200 active:scale-95 transition-all">ទិញឥឡូវនេះ</button>
-    </div>
 
-    <div id="payModal" class="modal">
-        <div class="bg-white w-full max-w-sm rounded-[50px] p-8 text-center shadow-2xl relative overflow-hidden">
-            <h3 class="font-black text-slate-800 mb-6 uppercase italic">Scan to Pay (ABA)</h3>
-            <canvas id="qr-canvas" class="mx-auto mb-6 rounded-[30px] border-4 border-slate-50 p-2"></canvas>
-            
-            <label class="block w-full py-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-[30px] text-center cursor-pointer mb-6 transition-all hover:bg-slate-100">
-                <div id="up-area">
-                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Upload Receipt (បញ្ជាក់ការបាញ់លុយ)</span>
-                </div>
-                <input type="file" id="f-receipt" class="hidden" onchange="handleFile(this)">
-            </label>
-
-            <button onclick="confirmPurchase()" id="final-btn" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-blue-100 uppercase italic">Confirm Purchase</button>
-            <button onclick="closeModal('payModal')" class="mt-5 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Cancel / បោះបង់</button>
+        <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 10pt; font-weight: bold; color: blue;">
+            <div>
+                អនុប្រធានទី១៖ <span id="outV1">...</span><br>
+                អនុប្រធានទី២៖ <span id="outV2">...</span>
+            </div>
+            <div id="outDate">សប្តាហ៍៖ ...</div>
         </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="color: black;">តួនាទី</th>
+                    <th>ច័ន្ទ</th>
+                    <th>អង្គារ</th>
+                    <th>ពុធ</th>
+                    <th>ព្រហស្បតិ៍</th>
+                    <th>សុក្រ</th>
+                    <th>សៅរ៍</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
+</div>
 
-    <script>
-        let selectedItem = null;
-        let base64Receipt = "";
-        let playerName = "";
+<div class="sticky-footer">
+    <button class="btn-main" style="background: var(--primary);" onclick="saveAndPreview()">រក្សាទុក & បង្ហាញ</button>
+    <button class="btn-main" style="background: var(--danger);" onclick="downloadPDF()">ទាញយក PDF</button>
+</div>
 
-        // ១. មុខងារទាញទិន្នន័យ (FIXED: Added Cache Buster)
-        async function init() {
-            try {
-                // បន្ថែម ?t=Timestamp ដើម្បីកុំឱ្យ Browser ចងចាំតម្លៃចាស់
-                const res = await fetch('/proxy/data?t=' + new Date().getTime());
-                const data = await res.json();
-                
-                const grid = document.getElementById('price-grid');
-                grid.innerHTML = data.products.map(p => `
-                    <div onclick="selectPkg('${p.name}', '${p.price}', this)" class="pkg-card p-6 text-center shadow-sm">
-                        <p class="text-2xl font-black text-slate-800 leading-none">${p.name}</p>
-                        <p class="text-[10px] font-bold text-blue-500 uppercase mt-1 tracking-widest italic">Diamonds</p>
-                        <div class="h-[1px] bg-slate-100 my-3"></div>
-                        <p class="text-sm font-black text-slate-400">$${p.price}</p>
-                    </div>
-                `).join('');
-            } catch (e) { console.error("Load Error:", e); }
+<script>
+    let appData = JSON.parse(localStorage.getItem('dutyApp')) || {
+        header: { leader: '', v1: '', v2: '', date: '' },
+        schedule: { mon:[], tue:[], wed:[], thu:[], fri:[], sat:[] }
+    };
+    let currentDay = 'mon';
+
+    function init() {
+        document.getElementById('mainLeader').value = appData.header.leader;
+        document.getElementById('v1').value = appData.header.v1;
+        document.getElementById('v2').value = appData.header.v2;
+        document.getElementById('weekRange').value = appData.header.date;
+        renderInputs();
+        renderTable();
+    }
+
+    function renderInputs() {
+        const list = document.getElementById('memberList');
+        list.innerHTML = '';
+        const data = appData.schedule[currentDay];
+        if (data.length === 0) { addNewMember(); } 
+        else {
+            data.forEach((m, idx) => addNewMember(m.name, m.role));
         }
+    }
 
-        // ២. មុខងារឆែកឈ្មោះ
-        async function checkMLBB() {
-            const uid = document.getElementById('uid').value;
-            const zid = document.getElementById('zid').value;
-            if(!uid || !zid) return alert("សូមបំពេញ ID និង Zone!");
-            const btn = document.getElementById('v-btn');
-            btn.innerText = "Checking...";
+    function addNewMember(name = '', role = 3) {
+        const div = document.createElement('div');
+        div.className = 'member-item';
+        div.innerHTML = `
+            <input type="text" class="m-name" style="flex:2" placeholder="ឈ្មោះសមាជិក" value="${name}">
+            <select class="m-role" style="flex:1">
+                <option value="1" ${role==1?'selected':''}>ប្រធាន</option>
+                <option value="2" ${role==2?'selected':''}>អនុប្រធាន</option>
+                <option value="3" ${role==3?'selected':''}>សមាជិក</option>
+            </select>
+            <button class="btn-delete" onclick="this.parentElement.remove()">✕</button>
+        `;
+        document.getElementById('memberList').appendChild(div);
+    }
 
-            const res = await fetch(`/proxy/check-id?uid=${uid}&zid=${zid}`);
-            const data = await res.json();
-            
-            if(data.success) {
-                playerName = data.username;
-                document.getElementById('user-display').innerText = "PLAYER: " + playerName;
-                document.getElementById('user-display').classList.remove('hidden');
-                btn.innerText = "VERIFIED ✓";
-                btn.classList.replace('bg-slate-900', 'bg-green-500');
-            } else {
-                alert("រកមិនឃើញ!");
-                btn.innerText = "Verify Username";
+    function switchDay(day, btn) {
+        saveToData();
+        currentDay = day;
+        document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderInputs();
+    }
+
+    function saveToData() {
+        const names = document.querySelectorAll('.m-name');
+        const roles = document.querySelectorAll('.m-role');
+        let dayData = [];
+        names.forEach((n, i) => {
+            if(n.value.trim() !== "") {
+                dayData.push({ name: n.value, role: parseInt(roles[i].value) });
             }
-        }
+        });
+        dayData.sort((a, b) => a.role - b.role);
+        appData.schedule[currentDay] = dayData;
+        
+        appData.header = {
+            leader: document.getElementById('mainLeader').value,
+            v1: document.getElementById('v1').value,
+            v2: document.getElementById('v2').value,
+            date: document.getElementById('weekRange').value
+        };
+        localStorage.setItem('dutyApp', JSON.stringify(appData));
+    }
 
-        function selectPkg(name, price, el) {
-            document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            selectedItem = { name, price };
-            document.getElementById('summary-price').innerText = `$${price}`;
-        }
+    function saveAndPreview() {
+        saveToData();
+        renderTable();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
 
-        function openPayModal() {
-            if(!selectedItem || !playerName) return alert("សូម Verify ID និងជ្រើសរើសពេជ្រ!");
-            document.getElementById('payModal').classList.add('show');
-            QRCode.toCanvas(document.getElementById('qr-canvas'), `ABA_PAY_${selectedItem.price}`, { width: 180 });
-        }
+    function renderTable() {
+        document.getElementById('outLeader').innerText = appData.header.leader || "..........";
+        document.getElementById('outV1').innerText = appData.header.v1 || "...";
+        document.getElementById('outV2').innerText = appData.header.v2 || "...";
+        document.getElementById('outDate').innerText = "សប្តាហ៍៖ " + (appData.header.date || "...");
 
-        function handleFile(input) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                base64Receipt = e.target.result;
-                document.getElementById('up-area').innerHTML = `<img src="${base64Receipt}" class="h-16 mx-auto rounded-lg mb-1"><span class="text-[9px] font-black text-green-600 uppercase">✅ Receipt Ready</span>`;
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const labels = ["ប្រធានក្រុម", "អនុប្រធាន", "សមាជិក", "សមាជិក", "សមាជិក", "សមាជិក", "សមាជិក", "សមាជិក"];
+        
+        let maxRows = 5;
+        ['mon','tue','wed','thu','fri','sat'].forEach(d => {
+            if(appData.schedule[d].length > maxRows) maxRows = appData.schedule[d].length;
+        });
 
-        // ៣. មុខងារបញ្ជូនការទិញ
-        async function confirmPurchase() {
-            if(!base64Receipt) return alert("សូមភ្ជាប់វិក្កយបត្រ!");
-            const btn = document.getElementById('final-btn');
-            btn.innerText = "Processing..."; btn.disabled = true;
-
-            const res = await fetch('/proxy/orders', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    player: playerName,
-                    id: document.getElementById('uid').value + "(" + document.getElementById('zid').value + ")",
-                    product: selectedItem.name,
-                    price: selectedItem.price,
-                    receipt: base64Receipt
-                })
+        for(let i=0; i < maxRows; i++) {
+            let row = `<tr><td class="role-col">${i+1}. ${labels[i] || 'សមាជិក'}</td>`;
+            ['mon','tue','wed','thu','fri','sat'].forEach(d => {
+                let m = appData.schedule[d][i];
+                let color = m?.role == 1 ? 'color:red; font-weight:bold;' : (m?.role == 2 ? 'color:blue; font-weight:bold;' : '');
+                row += `<td style="${color}">${m ? m.name : ''}</td>`;
             });
-
-            const result = await res.json();
-            if(result.success) {
-                alert("ការទិញជោគជ័យ!");
-                location.reload();
-            }
+            row += `</tr>`;
+            tbody.innerHTML += row;
         }
+    }
 
-        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-        window.onload = init;
-    </script>
+    function downloadPDF() {
+        saveAndPreview();
+        const element = document.getElementById('pdf-content');
+        html2pdf().from(element).set({
+            margin: 0,
+            filename: 'Duty_Schedule.pdf',
+            html2canvas: { scale: 3 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).save();
+    }
+
+    init();
+</script>
 </body>
 </html>
